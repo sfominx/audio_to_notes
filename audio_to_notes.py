@@ -15,19 +15,19 @@ def main():
     args = parser.parse_args()
 
     melody = source(args.input)
-    notes_o = notes(samplerate=melody.samplerate)
+    melody_note = notes(samplerate=melody.samplerate)
 
-    print("%8s" % "time", "note")
+    print("%5s" % "time", "note")
 
     total_frames = 0
     while True:
         samples, read = melody()
-        note = notes_o(samples)
-        if note[0]:
+        note = int(melody_note(samples)[0])
+        if note:
             time = total_frames / float(melody.samplerate)
-            print("%.6f" % time, midi2note(int(note[0])))
+            print("%.3f" % time, midi2note(note))
         total_frames += read
-        if read < notes_o.hop_size:
+        if read < melody_note.hop_size:
             break
 
 
